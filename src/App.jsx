@@ -3,7 +3,7 @@ function App() {
 
   return (
     <>
-      Nuestro proyecto en react con api!
+      Aqui va el codigo
     </>
   )
 }
