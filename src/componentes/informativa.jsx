@@ -2,7 +2,7 @@ function Informativa() {
 
   return (
     <>
-      Informativa
+      Informativa,m,m,m
     </>
   )
 }

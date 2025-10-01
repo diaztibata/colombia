@@ -33,14 +33,14 @@ function Detalle() {
   }, [depto, municipio]);
 
   if (!municipioData) return <p>Cargando municipio...</p>;
-
+  console.log(municipioData)
   return (
     <div>
       <h1>{municipioData.nm}</h1>
       <p>ID: {municipioData.id}</p>
       <p>TVN: {municipioData.tvn}</p>
       <p>PVN: {municipioData.pvn}</p>
-      <p>VNM: {municipioData.vnm}</p>
+      <p>VNM: {municipioData.vnm}</p><p>{municipioData.pcb}</p>
     </div>
   );
 }
