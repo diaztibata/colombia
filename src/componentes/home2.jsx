@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Home() {
-  const [departamentos, setDepartamentos] = useState(null);
-  const [capitales, setCapitales] = useState(null);
   const [modo, setModo] = useState("departamentos");
   const [busqueda, setBusqueda] = useState("");
+  const [departamentos, setDepartamentos] = useState(null);
+  const [capitales, setCapitales] = useState(null);
+  
+const navigate = useNavigate();
 
   useEffect(() => {
     const urlDpt =
@@ -27,7 +30,9 @@ function Home() {
     fetchJson(urlCpt, setCapitales);
   }, []);
 
-  const getListaMostrar = () => {
+
+  //filtro
+    const getListaMostrar = () => {
     if (modo === "departamentos" && departamentos) {
       return departamentos.data?.dpt ?? [];
     }
@@ -38,15 +43,24 @@ function Home() {
   };
 
   const lista = getListaMostrar();
+  {console.log(lista)}
 
-  const listaFiltrada = lista.filter((item) =>
-    item.nm.toLowerCase().includes(busqueda.toLowerCase())
-  );
+
+  let listaFiltrada;
+
+  if (busqueda.length >= 2) {
+    listaFiltrada = lista.filter((item) =>
+      item.nm.toLowerCase().includes(busqueda.toLowerCase())
+    );
+  } else {
+    listaFiltrada = lista; // sin filtrar
+  }
+
 
   return (
-    <div>
+    <>{modo}
 
-      <div>
+      <div className="filtro">
         <button onClick={() => setModo("departamentos")}>
           Mostrar Departamentos
         </button>
@@ -55,45 +69,26 @@ function Home() {
 
       <div>
         <input
+        className="buscador"
           type="text"
           placeholder="Buscar por nombre..."
           value={busqueda}
           onChange={(e) => setBusqueda(e.target.value)}
         />
       </div>
-
-      <div>
-        {lista.length === 0 ? (
-          <p>Cargando datos...</p>
-        ) : listaFiltrada.length === 0 ? (
-          <p>No se encontraron resultados</p>
-        ) : (
-          <ul>
-            {listaFiltrada.map((item) => (
-              <li key={item.id}>
-                <div>
-                  <strong>{item.nm}</strong> — Total de votos:{" "}
-                  {item.tvv ?? "N/A"}
-                </div>
-                {item.cdt && (
-                  <div>
-                    <p>Candidatos:</p>
-                    <ul>
-                      {item.cdt.map((cand) => (
-                        <li key={cand.id}>
-                          {cand.nm} — votos: {cand.tv}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-              </li>
-            ))}
-          </ul>
-        )}
+      <div className="elementos">
+          {listaFiltrada.length > 0 ? (
+            listaFiltrada.map((item) => (
+              <p onClick={() => navigate(`/detalle/${item.id.slice(0, -1)}/${item.id})`)} key={item.id}>{item.nm}</p>
+            ))
+          ) : (
+            <p>Cargando datos...</p>
+          )}
       </div>
-    </div>
-  );
+
+
+    </>
+  )
 }
 
-export default Home;
+export default Home
