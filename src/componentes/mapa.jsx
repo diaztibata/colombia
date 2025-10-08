@@ -1,8 +1,11 @@
+import BuscadorMunicipios from "./buscador-municipios";
+import ElMapa from "./elmapa";
 function Mapa() {
 
   return (
     <>
-      Mapa
+    <BuscadorMunicipios />
+    <ElMapa />
     </>
   )
 }
